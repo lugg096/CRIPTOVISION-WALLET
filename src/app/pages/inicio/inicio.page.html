@@ -1,0 +1,103 @@
+<ion-content>
+  <div style="background: var(--main-color) ">
+
+    <!-- HEADER -->
+    <ion-item style="--background: transparent;margin-bottom: 0;" lines="none">
+      <p style="color: #f7f8fbdc;text-align: center;width: 100%; padding: 0 20px;" (click)="goWallets()">{{nameWallet}}
+        <ion-icon name="chevron-down" style="margin: 0;transform: translateY(5px);font-size: 20px;"></ion-icon>
+      </p>
+      <ion-icon name="options" class="icon-nav-menu" (click)="goOptions()"
+        style="color: #f7f8fbdc;position: absolute; padding: 30px;right: -15px;">
+      </ion-icon>
+    </ion-item>
+
+    <div style="padding-top: 12px;padding-bottom: 0px;width: 100%;margin: auto;box-shadow: var(--shadow-black-100);">
+      <div style="font-weight: 500;color: #f7f8fb; text-align: center; line-height: 0.25;box-sizing: border-box;">
+        <div [ngStyle]="{'color': moneda.logo.color }">
+          <p style="font-size: 18px;color:#f7f8fbdc ;letter-spacing: 1.5px;">{{moneda.name}}</p>
+          <i *ngIf="moneda.logo.tipo=='icon'" [class]="moneda.logo.icon"
+            style="font-size: 55px;text-align: center;"></i>
+          <img *ngIf="moneda.logo.tipo=='img'" [src]="moneda.logo.img" style="width: 45px; transform: translateY(7px);">
+        </div>
+
+        <div style="text-align: center;">
+          <p style="font-size: 25px; margin-bottom: 20px;"> {{moneda.monto | number:'1.1-9'}}
+          </p>
+          <p style="font-size: 10px;color:#f7f8fba4 ;margin-top: 5px;">{{moneda.nameAbrev}}</p>
+        </div>
+      </div>
+
+
+      <!-- BOTONOES MAIN -->
+      <div style="display:block;text-align:center;margin-top: 20px;">
+        <div (click)="transaction(moneda)" style="display: inline-block;">
+          <div class="btn-main animate-pulse">
+            <ion-icon name="share-outline" style="color: var(--main-color);font-size: 25px;transform: translateY(-7px)">
+            </ion-icon>
+          </div>
+          <p
+            style="color: #fff;font-size: 11px;margin-top: 0px;text-align: center;font-weight: 600;transform: translateY(-4px)">
+            Enviar</p>
+        </div>
+
+        <div (click)="recibir()" style="display: inline-block;">
+          <div class="btn-main">
+            <ion-icon name="download-outline"
+              style="color: var(--main-color);font-size: 25px;transform: translateY(-7px)"> </ion-icon>
+          </div>
+          <p
+            style="color: #fff;font-size: 11px;margin-top: 0px;text-align: center;font-weight: 600;transform: translateY(-4px)">
+            Recibir</p>
+        </div>
+
+        <div (click)="transactions(moneda)" style="display: inline-block;">
+          <div class="btn-main">
+            <ion-icon name="list-outline" style="color: var(--main-color);font-size: 25px;transform: translateY(-6px)">
+            </ion-icon>
+          </div>
+          <p
+            style="color: #fff;font-size: 11px;margin-top: 0px;text-align: center;font-weight: 600;transform: translateY(-4px)">
+            Transac.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <ion-refresher slot="fixed" (ionRefresh)="getCoins($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-card button="true" *ngFor="let item of listMonedas" (click)="verToken(item)"
+    [class]="item.nameAbrev==moneda.nameAbrev?'items-select':'card-content'">
+
+    <div style="box-sizing: border-box;">
+      <div style=" width: 20%;float: left;text-align: center;">
+        <img *ngIf="item.logo.tipo=='img'" [src]="item.logo.img" style="width: 38px; transform: translateY(1px);">
+      </div>
+
+      <div style=" width: 80%;float: left;">
+        <div style="box-sizing: border-box;">
+          <div style=" width: 40%;float: left;padding-left: 10px;">
+            <p style="font-weight: 600;font-size: 17px;margin: 7px auto;margin-bottom: 0;">{{item.nameAbrev}}</p>
+            <p style="font-size: 13px; color: #a1a1a1; font-weight: 600;margin: 0;">{{item.name}}</p>
+          </div>
+          <div style=" width: 60%;float: left;">
+            <p style="text-align: right; margin: 7px;margin-bottom: 0; font-size: 17px;font-weight: 600;">
+              {{item.monto  | number:'1.1-8'}}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </ion-card>
+
+  <div style="position: absolute;bottom: 8px;margin: auto;width: 100%;">
+    <p style="text-align: center;font-size: 12px;text-align: center;
+  font-size: 10px;
+  letter-spacing: 1px;">Powered by <a target="_blank" href="Https://0xaddress.com/">
+        Oxaddress</a></p>
+  </div>
+</ion-content>

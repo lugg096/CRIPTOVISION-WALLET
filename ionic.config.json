@@ -1,0 +1,8 @@
+{
+  "name": "VSION wallet",
+  "integrations": {
+    "capacitor": {},
+    "cordova": {}
+  },
+  "type": "angular"
+}

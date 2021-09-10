@@ -1,0 +1,58 @@
+<ion-content style="--padding-bottom: 50px;">
+  <div style="--color: var(--main-color);margin-bottom: 0;">
+    <!-- HEADER -->
+    <ion-icon slot="start" name="arrow-back" class="icon-nav-arrow "
+      style="color: var(--main-color); border-radius: 100%;position: absolute;z-index: 10;" (click)="goConfig()">
+    </ion-icon>
+    <ion-item style="--background: transparent;margin-bottom: 0;" lines="none">
+      <ion-title class="title" style="color: var(--main-color);">CUENTAS</ion-title>
+    </ion-item>
+  </div>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" class="ion-margin">
+    <ion-fab-button style="--background:  var(--main-color);--color:#fff;" (click)="goHome()">
+      <ion-icon name="add" style="font-size: 22px;"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <ion-card button="true" *ngFor="let item of wallets"
+    style="--background: white;border-radius: 20px;margin-top: 10px ;padding: 15px 5px 15px 20px;box-shadow: var(--shadow-black-100);">
+    <ion-item-sliding>
+      <ion-item (click)="selectWallet(item)" lines="none" class="ion-no-padding">
+        <div style="box-sizing: border-box;">
+
+          <div style=" width: 20%;float: left;text-align: center;margin-top: 2%;">
+            <div class=" btn-main">
+              <ion-icon name="wallet" style="color: var(--main-color);font-size: 25px;transform: translateY(8px)">
+              </ion-icon>
+            </div>
+          </div>
+
+          <div style=" width: 80%;float: left;">
+
+            <div style="box-sizing: border-box;">
+              <div style=" width: 60%;float: left;padding-left: 10px;">
+                <p style="font-weight: 600;font-size: 15px;margin: 7px auto;margin-bottom: 0;">{{item.NAME}}</p>
+                <p style="font-size: 11px; color: #a1a1a1; font-weight: 600;margin: 0;">{{item.publicKey}}</p>
+              </div>
+       
+              <div style=" width: 40%;float: left;margin-top: 3%;text-align: right;">
+                <ion-icon name="checkmark-circle"  *ngIf="item.publicKey==data.publicKey"
+                  style="font-size: 23px;margin-top: 8%;color: #35b12c;margin-right: 8%;" ></ion-icon>
+                  <ion-icon name="chevron-forward" *ngIf="item.publicKey!=data.publicKey"
+                  style="font-size: 23px;margin-top: 8%;color: #a1a1a1;margin-right: 8%;"></ion-icon>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ion-item>
+      <ion-item-options side="end">
+        <ion-item-option color="danger" (click)="eliminarWallet(item)">
+          <ion-icon slot="icon-only" name="trash"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
+
+    </ion-item-sliding>
+
+  </ion-card>
+</ion-content>

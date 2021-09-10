@@ -1,0 +1,160 @@
+<ion-content>
+  <ion-slides #slidesPadre pager="false" [options]="slideOptsOnboarding" style="height: 100%;">
+
+
+    <ion-slide class="ion-no-padding">
+      <div style=" padding-bottom: 5px;  height: 100%; color: #2F3435;">
+
+
+
+        <div style="margin-bottom: 0;">
+          <!-- HEADER -->
+          <ion-icon slot="start" name="arrow-back" class="icon-nav-arrow "
+            style="color: var(--main-color); border-radius: 100%;position: absolute;z-index: 10;left: 0;"
+            (click)="goHome()">
+          </ion-icon>
+          <ion-item style="--background: transparent;margin-bottom: 0;" lines="none">
+            <ion-title class="title" style="color: var(--main-color);">Importar cuenta</ion-title>
+          </ion-item>
+        </div>
+
+        <ion-segment (ionChange)="segmentChanged($event)" value="frase">
+          <ion-segment-button value="frase">
+            <ion-label>SEMILLAS</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="pk">
+            <ion-label>LLAVE PRIVADA</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="foto">
+            <ion-label>FOTO</ion-label>
+          </ion-segment-button>
+        </ion-segment>
+
+        <!-- FRASE  -->
+        <div *ngIf="section=='frase'">
+
+          <ion-item style="margin-top: 15px;padding: 0 15px;">
+            <ion-label position="floating" style="font-size: 12px;color: #666666">Ingrese las 12 palabras semillas
+            </ion-label>
+
+            <ion-textarea rows="4" [(ngModel)]="frase"></ion-textarea>
+            <span style="position: absolute;right: 10px; top: 5px;z-index: 10; background: #fff;border-radius: 100%;"
+              (click)="scan('frase')" class="animate-pulse2">
+              <ion-icon name="scan" style="font-size: 23px;color: var(--main-color); transform: translateY(2px);">
+              </ion-icon>
+            </span>
+          </ion-item>
+
+
+          <div style="text-align: center">
+            <ion-button expand="block" (click)="verificarFrase()" class="button-01" [disabled]="frase==''">
+              Importar
+            </ion-button>
+          </div>
+
+
+        </div>
+
+        <!-- LLAVE PRIVADA  -->
+        <div *ngIf="section=='pk'">
+          <ion-item style="margin-top: 15px;padding: 0 15px;">
+            <ion-label position="floating" style="font-size: 12px;color: #666666">Importar llave privada</ion-label>
+
+            <ion-textarea rows="4" [(ngModel)]="llavePublica"></ion-textarea>
+            <span style="position: absolute;right: 10px; top: 5px;z-index: 10; background: #fff;border-radius: 100%;"
+              (click)="scan('pk')" class="animate-pulse2">
+              <ion-icon name="scan" style="font-size: 23px;color: var(--main-color); transform: translateY(2px);">
+              </ion-icon>
+            </span>
+          </ion-item>
+
+
+          <div style="text-align: center">
+            <ion-button expand="block" (click)="getAccount(llavePublica)" class="button-01"
+              [disabled]="llavePublica==''">
+              Importar
+            </ion-button>
+          </div>
+
+        </div>
+
+        <!-- FOTO  -->
+        <div *ngIf="section=='foto'">
+
+          <div style="text-align: center; width: 70%;margin: auto;margin-top: -10%;">
+            <img src="../../../assets/images/onboard-foto.png">
+          </div>
+
+          <p style="text-align: center; font-size: 23px;font-weight: 600; margin-bottom: 10px;margin-top: -20px;">Importar foto
+      
+          </p>
+
+          <p style="text-align: center;font-size: 12px; margin: 0 40px;color: #8a8a8a;">
+            Seleccione la foto que generó su llave privada
+          </p>
+
+    
+          <div>
+            <ion-button expand="block" class="button-01">
+              Importar foto
+              <input type="file" (change)="fileChangeEvent($event)" class="fileInputProfile">
+            </ion-button>
+
+          </div>
+   
+        </div>
+
+      </div>
+    </ion-slide>
+
+    <!-- Crear PIN -->
+    <ion-slide>
+      <div class=" text-left" style="background: var(--bfirma-primary);width: 100%;height: 100%;">
+        <app-pin [data]="section == 'foto'?dataSlideImportPhoto:dataSlideCreate" (backPage)="backSlidePadre()" 
+        (getClave)="section == 'foto'?getClaveValidPhoto($event):getClave($event)"></app-pin>
+      </div>
+    </ion-slide>
+
+    <!-- Validar PIN -->
+    <ion-slide *ngIf="section != 'foto'">
+      <div class=" text-left" style="background: var(--bfirma-primary);width: 100%;height: 100%;">
+        <app-pin [data]="dataSlideValidacion" (backPage)="backSlidePadre()" (getClave)="getClaveValid($event)">
+        </app-pin>
+      </div>
+    </ion-slide>
+
+
+    <ion-slide class="ion-no-padding">
+      <div style=" padding-bottom: 5px;  height: 100%; color: #2F3435;">
+
+        <div style="text-align: center;margin-top: 10%;width: 85%;margin: auto;">
+          <img src="../../../assets/images/Wallet_Two Color.png">
+        </div>
+
+        <p style="text-align: center; font-size: 23px;font-weight: 600; margin-bottom: 10px;margin-top: -10%;">Cuenta
+          importada
+        </p>
+
+        <p style="text-align: center;font-size: 12px; margin: 0 40px;color: #8a8a8a;">Puedes alojar más de una cuenta
+          en su billetera, ingrese un alias para que la pueda identificar.
+        </p>
+
+        <ion-item style="margin-top: 5%;padding: 0 20px ;">
+          <ion-label position="stacked" style="--color:#999999">Alias de cuenta</ion-label>
+          <ion-input [(ngModel)]="alias" placeholder="Wallet 01" style="color: #666666;"></ion-input>
+
+        </ion-item>
+
+        <div style="text-align: center">
+          <ion-button expand="block" (click)="terminarWallet()" class="button-01" [disabled]="alias==''">
+            Ir a incio
+          </ion-button>
+        </div>
+
+      </div>
+    </ion-slide>
+
+
+  </ion-slides>
+
+</ion-content>

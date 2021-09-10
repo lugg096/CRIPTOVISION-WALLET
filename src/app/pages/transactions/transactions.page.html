@@ -1,0 +1,86 @@
+<ion-content>
+
+  <div style="--color: var(--main-color);margin-bottom: 0;">
+
+    <ion-icon slot="start" name="arrow-back" class="icon-nav-arrow "
+      style="color: var(--main-color); border-radius: 100%;position: absolute;z-index: 10;" (click)="goInicio()">
+    </ion-icon>
+    <ion-item style="--background: transparent;margin-bottom: 0;" lines="none">
+      <ion-title class="title" style="color: var(--main-color);">Transacciones {{moneda}}</ion-title>
+    </ion-item>
+  </div>
+  <ion-refresher slot="fixed" (ionRefresh)="getTransaction($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div *ngIf="!imagen">
+    <div style="margin: 0 20px;">
+      <p style="color: var(--main-color);font-size: 11px;margin-bottom: 0;">Nodo:</p>
+      <p style="margin-top: 2px;color: #a1a1a1;font-size: 12px;"> https://bsc-dataseed1.binance.org</p>
+    </div>
+
+    <div style="margin: 0 20px;" *ngIf="moneda=='VSION'">
+      <p style="color: var(--main-color);font-size: 11px;margin-bottom: 0;">Smart contract:</p>
+      <p style="margin-top: 2px;color: #a1a1a1;font-size: 12px;">0xba4ce0070deef6703e1b47bfde36f41ade70df2d</p>
+    </div>
+  </div>
+
+
+
+  <div *ngIf="imagen">
+
+    <p style="text-align: center; font-size: 23px;font-weight: 600; margin-bottom: 10px;margin-top: 25%">Sin registros
+    </p>
+
+    <p style="text-align: center;font-size: 12px; margin: 0 40px;color: #8a8a8a;">No se encontro ningun registro de
+      transacciones en esta wallet
+    </p>
+    <div style="text-align: center;margin-top: -10%;">
+      <img src="../../../assets/images/conection.png">
+    </div>
+  </div>
+
+  <ion-card button="true" *ngFor="let item of transactionList" target="_blank"
+    [href]="'https://bscscan.com/tx/'+item.hash"
+    style="--background: white;border-radius: 20px;margin-top: 10px ;padding: 15px 5px 15px 20px;box-shadow: var(--shadow-black-100);">
+    <div style="box-sizing: border-box;">
+
+      <div style=" width: 20%;float: left;text-align: center;margin-top: 2%;">
+        <a class=" btn-main">
+          <ion-icon [name]="item.to == data.publicKey?'download-outline':'share-outline'"
+            style="color: var(--main-color);font-size: 25px;transform: translateY(8px)">
+          </ion-icon>
+        </a>
+      </div>
+      <div style=" width: 70%;float: left;">
+
+        <div style="box-sizing: border-box;">
+          <div style=" width: 60%;float: left;padding-left: 10px;">
+            <p style="font-weight: 600;font-size: 15px;margin: 7px auto;margin-bottom: 0;">
+              {{item.to == data.publicKey?'Recibido':'Enviado'}}</p>
+
+            <p style="font-size: 11px; color: #a1a1a1; font-weight: 600;margin: 0;">
+              {{item.to == data.publicKey?'De: '+item.fromAbrev :'A: '+ item.fromAbrev  }}</p>
+            <p style="font-size: 11px; color: #a1a1a1; font-weight: 600;margin: 0;">
+              TX: {{item.hashAbrev }}</p>
+          </div>
+          <div style=" width: 40%;float: left;margin-top: 1%;">
+            <p style="font-size: 9px;text-align: center;margin: 0;">{{item.timeStamp*1000   | date:'MM/dd/yy, h:mm a'}}
+            </p>
+
+            <p style="text-align: center; margin: 0 7px;font-size: 14px;font-weight: 600">
+              {{item.to == data.publicKey?'+':'-'}}{{item.value/divisor   | number:'1.1-8'}} <br> <span
+                style="font-size: 11px;">{{moneda}}</span>
+            </p>
+
+          </div>
+        </div>
+
+      </div>
+      <div style=" width: 10%;float: left;">
+        <ion-icon name="chevron-forward" style="font-size: 23px;margin-top: 50%;color: #a1a1a1;"></ion-icon>
+      </div>
+    </div>
+  </ion-card>
+
+  <ion-content>

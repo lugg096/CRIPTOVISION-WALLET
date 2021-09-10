@@ -1,0 +1,224 @@
+<ion-content class="contetInicio">
+
+
+  <ion-slides #slidesPadre pager="false" [options]="slideOpts" style="height: 100%;">
+
+    <!-- DATOS -->
+    <ion-slide class="ion-no-padding" style="display: inline;">
+      <div>
+
+        <!-- HEADER -->
+        <div style="--color: var(--main-color);margin-bottom: 0;">
+          <ion-icon slot="start" name="arrow-back" class="icon-nav-arrow "
+            style="color: var(--main-color); border-radius: 100%;position: absolute; z-index: 10;left: 0;"
+            (click)="goInicio()">
+          </ion-icon>
+          <ion-item style="--background: transparent;margin-bottom: 0;" lines="none">
+            <ion-title class="title" style="color: var(--main-color);">Enviar</ion-title>
+          </ion-item>
+        </div>
+
+        <!-- MONEDA A TRANSFERIR -->
+        <div class="contenido1"
+          style="border-radius: 15px;margin-top: -10px;padding-top: 12px;padding-bottom: 0px;margin:auto ;margin-top:18px;width: 90%;box-shadow: var(--shadow-black-300);">
+          <div
+            style="font-weight: 500;color: #f7f8fb; text-align: center; line-height: 0.25;box-sizing: border-box;height: 75px;">
+
+
+            <div style="width: 35%;float: left;text-align: center;" [ngStyle]="{'color': moneda.logo.color }">
+              <i *ngIf="moneda.logo.tipo=='icon'" [class]="moneda.logo.icon"
+                style="font-size: 52px;text-align: center;margin-top: 5%;"></i>
+              <img *ngIf="moneda.logo.tipo=='img'" [src]="moneda.logo.img"
+                style="width: 45px; transform: translateY(7px);">
+            </div>
+
+            <div style=" width: 45%;float: left; text-align: left;">
+
+              <p style="font-size: 15px;color:#f7f8fbdc ;">{{moneda.nameAbrev}}</p>
+              <p style="font-size: 20px; margin-bottom: 20px;"><span style="font-size: 15px;"></span>
+                {{moneda.monto  | number:'1.1-8'}}
+              </p>
+            </div>
+
+            <div style=" width: 20%;float: left; text-align: left;">
+              <ion-icon name="sync" style="font-size: 30px;margin-top: 15px;"></ion-icon>
+            </div>
+          </div>
+        </div>
+
+        <!-- CAMPOS -->
+        <div style=" color: #666666;padding: 23px;padding-top: 10;">
+          <div>
+            <p style="font-size: 22px;font-weight: 600;text-align: left;color: #666666;margin-bottom: 5px;">Datos
+              necesarios
+            </p>
+            <p style="font-size: 12px;font-weight: 600;text-align: left;color: #999999;margin-top: 0;">Ingresa la
+              dirección de la cuenta a donde desea transferir y la cantidad de {{moneda.nameAbrev}} a enviar </p>
+          </div>
+          <form [formGroup]="transferForm">
+            <ion-item style="margin-top: 8%;">
+              <ion-label position="stacked" style="--color:#999999">Dirección de cuenta</ion-label>
+              <ion-input formControlName="publicKey" placeholder="0xa... ...aaa" style="color: #666666;"></ion-input>
+              <span
+                style="position: absolute;right: 10px; bottom: 5px;z-index: 10; background: #fff;border-radius: 100%;"
+                (click)="scan()" class="animate-pulse2">
+                <ion-icon name="qr-code-outline"
+                  style="font-size: 23px;color: var(--main-color); transform: translateY(2px);"></ion-icon>
+              </span>
+            </ion-item>
+
+            <p style="font-size: 11px;color: #eb445a;text-align: left;margin-top: 5px;"
+              *ngIf="!transferForm.controls.publicKey.valid &&  !transferForm.controls.publicKey.pending  && (transferForm.controls.publicKey.dirty || submitAttempt)">
+              La dirección de destino es obligatoria
+            </p>
+
+            <ion-item style="margin-top:18px">
+              <ion-label position="stacked" style="--color:#999999">Cantidad ({{moneda.nameAbrev}})</ion-label>
+              <ion-input placeholder="0.00" type="number" formControlName="monto" style="color: #666666;" max="5">
+              </ion-input>
+            </ion-item>
+            <p style="font-size: 11px;color: #eb445a;text-align: left;margin-top: 5px;"
+              *ngIf="!transferForm.controls.monto.valid && (transferForm.controls.monto.dirty || submitAttempt)">
+              Cantidad es obligatorio
+            </p>
+          </form>
+          <div style="text-align: center;">
+            <a href="javascript:void(0)" class="btn btn-2" (click)="continuar()"
+              style="position: relative;top: 50px;">Siguiente</a>
+            <!--       <a href="javascript:void(0)" class="btn btn-2" (click)="comprar()"
+              style="position: relative;top: 50px;">Siguiente</a> -->
+
+
+          </div>
+        </div>
+
+      </div>
+
+    </ion-slide>
+
+    <!-- VERIFICAR -->
+    <ion-slide class="ion-no-padding">
+      <div style="height: 100%; width: 100%;">
+
+        <!-- HEADER -->
+        <div style="--color: var(--main-color);margin-bottom: 0;">
+          <ion-icon slot="start" name="arrow-back" class="icon-nav-arrow "
+            style="color: var(--main-color); border-radius: 100%;position: absolute; z-index: 10;left: 0;"
+            (click)="backSlidePadre()">
+          </ion-icon>
+          <ion-item style="--background: transparent;margin-bottom: 0;" lines="none">
+            <ion-title class="title" style="color: var(--main-color);">Verificar</ion-title>
+          </ion-item>
+        </div>
+
+        <!-- MONEDA A TRANSFERIR -->
+        <div class="contenido1"
+          style="border-radius: 15px;margin-top: -10px;padding-top: 12px;padding-bottom: 0px;margin:auto ;margin-top:18px;width: 90%;box-shadow: var(--shadow-black-300)">
+          <div
+            style="font-weight: 500;color: #f7f8fb; text-align: center; line-height: 0.25;box-sizing: border-box;height: 75px;">
+           
+            <div style="width: 35%;float: left;text-align: center;" [ngStyle]="{'color': moneda.logo.color }">
+        
+              <img *ngIf="moneda.logo.tipo=='img'" [src]="moneda.logo.img"
+                style="width: 45px; transform: translateY(7px);">
+            </div>
+           
+           
+           
+          <!--   <div style=" width: 28%;float: left;text-align: center;">
+              <img src="../../../assets/images/LOGO-ICONO.png"
+                style="width: 32px; transform: translateY(7px);margin-top: 5%;">
+            </div> -->
+            <div style=" width: 52%;float: left; text-align: left;">
+
+              <p style="font-size: 12px;color:#f7f8fbdc ;margin-bottom: 0">En tu cuenta quedaría:</p>
+              <p style="font-size: 20px; margin-bottom: 16px;margin-top: 16px;"><span style="font-size: 15px;"></span>
+                {{moneda.monto-transferForm.value.monto  | number:'1.1-8'}}
+              </p>
+              <p style="font-size: 10px;color:#f7f8fbdc ;margin-top: 0;"> {{moneda.nameAbrev}}</p>
+
+
+            </div>
+
+            <div style=" width: 20%;float: left; text-align: left;">
+              <!--    <ion-icon name="sync" style="font-size: 30px;margin-top: 15px;"></ion-icon> -->
+            </div>
+          </div>
+        </div>
+
+        <!-- INFORMACION A VERIFICAR -->
+        <ion-card button="true"
+          style="--background: white;border-radius: 15px;margin: auto;margin-top: 10px ;padding: 30px 30px;box-shadow: var(--shadow-black-300);width: 90%;"
+          class=" recibo">
+          <p style="font-weight: 520;font-size: 16px;margin: 7px auto;color: #2F3435;font-weight: 600;">Desde (Tu
+            cuenta)</p>
+          <p style="font-size: 11px; color: #8b898f; font-weight: 500;margin: 0;">DIRECCIÓN DE LA CUENTA</p>
+          <p style="font-weight: 520;font-size: 12px;margin: 7px auto;">{{p1}}<span style="font-size: 10px;">{{center}}</span>{{p2}} </p>
+          <br>
+          <p style="font-weight: 520;font-size: 16px;margin: 7px auto;color: #2F3435;font-weight: 600;">Hacia (Cuenta
+            destino)</p>
+          <p style="font-size: 11px; color: #8b898f; font-weight: 500;margin: 0;">DIRECCIÓN DE LA CUENTA</p>
+          <p style="font-weight: 520;font-size: 12px;margin: 7px auto;">{{p1Des}}<span style="font-size: 10px;">{{centerDes}}</span>{{p2Des}}</p>
+          <br>
+          <!--  <p style="font-size: 11px; color: #8b898f; font-weight: 500;">Monto</p> -->
+          <p style="font-weight: 520;font-size: 16px;margin: 7px auto;color: #2F3435;font-weight: 600;">Cantidad a transferir:</p>
+          <p style="font-size: 15px; font-weight: 520; color: #e0533a;margin-top: 0;"><span
+              style="font-size: 10px;"></span>
+            {{transferForm.value.monto  | number:'1.1-8'}} {{moneda.nameAbrev}}
+          </p>
+        </ion-card>
+
+        <div style="text-align: center;">
+          <a href="javascript:void(0)" class="btn btn-2" (click)="nextSlidePadre()"
+            style="position: relative;top: 50px;">Transferir</a>
+        </div>
+
+      </div>
+
+    </ion-slide>
+
+
+    <!-- Crear PIN -->
+    <ion-slide>
+      <div class=" text-left" style="background: var(--main-color);width: 100%;height: 100%;">
+        <app-pin [data]="dataSlideValid" (backPage)="backSlidePadre()" (getClave)="getClave($event)"></app-pin>
+      </div>
+    </ion-slide>
+
+    <!-- Transferencia con exito -->
+    <ion-slide class="ion-no-padding">
+      <div style=" padding-bottom: 5px;  height: 100%; color: #2F3435;">
+
+        <div style="text-align: center;margin-top: 10%;">
+          <img src="../../../assets/images/Money transfer _Two Color.png">
+        </div>
+
+        <p style="text-align: center; font-size: 23px;font-weight: 600; margin-bottom: 10px;">
+          Transferencia<br>completada con éxito
+        </p>
+
+        <p style="text-align: center;font-size: 11px; margin: 0 40px;color: #757575;">La transferencia fue completada
+          exitosamente y será guardada en el historial de movimientos de su wallet
+        </p>
+
+        <div style="text-align: center">
+          <ion-button expand="block" (click)="goInicio()" class="button-01">
+            Ir a incio
+          </ion-button>
+        </div>
+
+      </div>
+    </ion-slide>
+
+  </ion-slides>
+
+
+
+
+
+
+
+
+
+
+</ion-content>
