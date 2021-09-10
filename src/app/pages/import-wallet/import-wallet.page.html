@@ -14,11 +14,11 @@
             (click)="goHome()">
           </ion-icon>
           <ion-item style="--background: transparent;margin-bottom: 0;" lines="none">
-            <ion-title class="title" style="color: var(--main-color);">Importar cuenta</ion-title>
+            <div class="title" style="color: var(--main-color);">Importar cuenta</div>
           </ion-item>
         </div>
 
-        <ion-segment (ionChange)="segmentChanged($event)" value="frase">
+        <ion-segment (ionChange)="segmentChanged($event)" value="frase" mode="md">
           <ion-segment-button value="frase">
             <ion-label>SEMILLAS</ion-label>
           </ion-segment-button>
